@@ -54,11 +54,11 @@ def get_work(dpath, worklist, download=True):
 
                     #作品名と著者名を削除
                     texts = re.sub(r"^.*\s+.*", "", texts)
-                    texts = re.sub(r"^\n*", "", texts)
+                    texts = re.sub(r"^\s*", "", texts)
                     
                     #注を削除
                     texts = re.sub(r"^-*.+?-\s", "", texts, flags=re.DOTALL)
-                    texts = re.sub(r"^\n*", "", texts)
+                    texts = re.sub(r"^\s*", "", texts)
                     
                     #文末の書誌情報の削除
                     texts = re.sub(r"\s底本：.*$", "", texts, flags=re.DOTALL)
