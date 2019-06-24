@@ -74,14 +74,18 @@ def get_work(dpath, worklist, download=True):
 
                     #文中のルビ用の記号の削除
                     texts = re.sub(r"｜", "", texts)
-                    
+
+                    #かぎかっこを別の行に
+                    texts = re.sub(r"(?<!\n)「", "\n「", texts)
+                    texts = re.sub(r"」(?!\n)", "」\n", texts)
+
                     fout.write(texts)
                     fout.write("\n\n")
             i += 1
 
 if __name__ == "__main__":
-    #download = True
-    download = False
+    download = True
+    #download = False
     data_path = Path("./aozora_bunko/datas")
     if download:
         get_zip_file(data_path)
