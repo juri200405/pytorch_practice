@@ -40,7 +40,7 @@ def get_work(dpath, worklist, download=True):
     text_path = dpath / "texts"
 
     with open(str(dpath / "conv.txt"), 'wt', encoding='utf8') as fout:
-        for item in worklist[:2]:
+        for item in worklist[:10]:
             if((i % 100) == 0):
                 print(i)
             
@@ -51,13 +51,9 @@ def get_work(dpath, worklist, download=True):
             for text_file in p_tmp:
                 with open(str(text_file), 'rt', encoding='shiftjis') as fstream:
                     texts = fstream.read(-1)
-
-                    #作品名と著者名を削除
-                    texts = re.sub(r"^.*\s+.*", "", texts)
-                    texts = re.sub(r"^\s*", "", texts)
                     
-                    #注を削除
-                    texts = re.sub(r"^-*.+?-\s", "", texts, flags=re.DOTALL)
+                    #作品名と著者名、及び注を削除
+                    texts = re.sub(r"^.+-+\s", "", texts, flags=re.DOTALL)
                     texts = re.sub(r"^\s*", "", texts)
                     
                     #文末の書誌情報の削除
@@ -84,10 +80,15 @@ def get_work(dpath, worklist, download=True):
             i += 1
 
 if __name__ == "__main__":
+    use_proxy = True
+    #use_prixy = False
     download = True
     #download = False
     data_path = Path("./aozora_bunko/datas")
     if download:
+        if use_proxy:
+            proxy = urllib.request.ProxyHandler({'https':'http://proxy.uec.ac.jp:8080'})
+            urllib.request.install_opener(urllib.request.build_opener(proxy))
         get_zip_file(data_path)
         unzip(data_path)
     worklist = get_worklist(data_path)
