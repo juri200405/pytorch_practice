@@ -3,6 +3,7 @@ import urllib.request
 from pathlib import Path
 import csv
 import re
+import tqdm
 
 def get_zip_file(dpath):
     urllib.request.urlretrieve("https://www.aozora.gr.jp/index_pages/list_person_all_extended_utf8.zip", str(dpath / "list_person_all_extended_utf8.zip"))
@@ -39,8 +40,8 @@ def get_work(dpath, worklist, download=True):
     zip_path = dpath / "zips"
     text_path = dpath / "texts"
 
-    with open(str(dpath / "conv.txt"), 'wt', encoding='utf8') as fout:
-        for item in worklist[:10]:
+    with open(str(dpath / "text.txt"), 'wt', encoding='utf8') as fout:
+        for item in tqdm.tqdm(worklist[:10]):
             zip_name = download_text_zip(item, zip_path, download)
             file_name = extract_text_zip(zip_path, zip_name, text_path)
             
