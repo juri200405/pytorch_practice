@@ -76,6 +76,15 @@ def get_work(dpath, worklist, download=True):
                 #かぎかっこを別の行に
                 texts = re.sub(r"(?<!\n)「", "\n「", texts)
                 texts = re.sub(r"」(?!\n)", "」\n", texts)
+                
+                #かぎかっこで始まらない行を句点で分割
+                text_list = re.split(r"\n+", texts)
+                text_list_new = []
+                for text_line in text_list:
+                    if(not re.match(r"^「", text_line)):
+                        text_line = re.sub(r"。(?!\s)", "。\n", text_line)
+                    text_list_new.append(text_line)
+                texts = "\n".join(text_list_new)
 
                 write_byte_num += fout.write(texts)
                 write_byte_num += fout.write("\n\n\n")
