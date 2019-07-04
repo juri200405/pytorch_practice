@@ -41,15 +41,14 @@ def get_work(dpath, worklist, download=True):
 
     with open(str(dpath / "conv.txt"), 'wt', encoding='utf8') as fout:
         for item in worklist[:10]:
-            if((i % 100) == 0):
-                print(i)
-            
             zip_name = download_text_zip(item, zip_path, download)
             file_name = extract_text_zip(zip_path, zip_name, text_path)
             
             p_tmp = (text_path / file_name).glob('*.txt')
             for text_file in p_tmp:
                 with open(str(text_file), 'rt', encoding='shiftjis') as fstream:
+                    fout.write(file_name)
+                    fout.write('\n')
                     texts = fstream.read(-1)
                     
                     #作品名と著者名、及び注を削除
@@ -76,7 +75,7 @@ def get_work(dpath, worklist, download=True):
                     texts = re.sub(r"」(?!\n)", "」\n", texts)
 
                     fout.write(texts)
-                    fout.write("\n\n")
+                    fout.write("\n\n\n")
             i += 1
 
 if __name__ == "__main__":
